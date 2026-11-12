@@ -95,6 +95,43 @@ h1{animation:titleIn .9s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes gavel{0%,58%,100%{transform:rotate(0)}68%{transform:rotate(-55deg)}76%{transform:rotate(14deg)}84%{transform:rotate(0)}}
 .snd{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:10px;z-index:30;width:44px;height:44px;font-size:21px;line-height:1;border:3px solid var(--ink);border-radius:50%;background:var(--card);box-shadow:3px 3px 0 var(--sh);cursor:pointer}
 .snd:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.intro{padding:16px 14px 20px;text-align:center;transition:transform .45s,opacity .45s}
+.intro.out{transform:scale(.9) translateY(24px);opacity:0}
+.story{margin:2px 0 12px}
+.story p{margin:7px 0;font-weight:600;font-size:17px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) both}
+.story b{color:var(--red)}
+.cast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}
+.cc{background:var(--card);border:3px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--sh);padding:8px 5px 10px;font-size:12px;line-height:1.3;animation:pop .6s cubic-bezier(.3,1.4,.5,1) both}
+.cc span{display:block;font-size:40px;line-height:1.15;animation:idle 3s ease-in-out infinite}
+.cc b{display:block;font-size:12px;margin:2px 0 3px}
+.cc.me{background:#FFD23F;color:#14110F}
+.how{font-size:14px;color:var(--mute);margin:10px 0 4px;animation:pop .6s cubic-bezier(.3,1.4,.5,1) both}
+#game.in{animation:pop .6s cubic-bezier(.3,1.4,.5,1) both}
+.slam.open{color:var(--ink);border-color:var(--ink);font-size:clamp(20px,7vw,44px)}
+main{padding-top:24px}
+.logo{background:radial-gradient(ellipse at 50% 55%,rgba(255,210,63,.85),rgba(255,210,63,0) 66%)}
+.intro{background:linear-gradient(#FFFFFF,#FFF4C7)}
+.cc{color:#14110F}
+.cc:nth-child(1){background:#DCE9FF}.cc:nth-child(2){background:#FFD6D9}
+.stage{min-height:204px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 3px,transparent 3px 56px),linear-gradient(#2A6DB0,#12355B 72%)}
+.stage:before{height:36%;background:repeating-linear-gradient(90deg,#9A6531 0 36px,#7A4B22 36px 38px)}
+.seal{position:absolute;top:10px;left:calc(50% - 19px);width:38px;height:38px;display:grid;place-items:center;font-size:20px;font-style:normal;background:#FFD23F;border:3px solid #14110F;border-radius:50%;box-shadow:2px 2px 0 #14110F;animation:idle 3s ease-in-out infinite}
+.lamp{position:absolute;top:0;width:120px;height:100%;pointer-events:none;background:linear-gradient(rgba(255,236,160,.42),transparent 85%);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);animation:flick 5s ease-in-out infinite}
+.lamp.l1{left:5%}.lamp.l2{right:5%;animation-delay:-2s}
+@keyframes flick{0%,100%{opacity:.9}50%{opacity:.5}60%{opacity:1}}
+.ch{z-index:1}
+.av{filter:drop-shadow(0 6px 0 rgba(0,0,0,.3))}
+.ch small{display:inline-block;font-weight:800;font-size:11px;color:#14110F;background:#FFD23F;border:2px solid #14110F;border-radius:6px;padding:1px 6px;margin-top:6px;box-shadow:2px 2px 0 #14110F}
+.bar{position:relative;height:18px}
+.bar:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),rgba(20,17,15,.35) calc(10% - 2px) 10%)}
+.log{gap:17px}
+.b{position:relative}
+.b:after{content:"";position:absolute;bottom:-9px;width:14px;height:14px;background:inherit;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(45deg)}
+.b.judge:after{left:22px}.b.plaintiff:after,.b.you:after{right:22px}
+.b.note:after{display:none}
+.opt{border-left-width:10px}
+.opts .opt:nth-child(1){border-left-color:#2F6FED}.opts .opt:nth-child(2){border-left-color:#E63946}.opts .opt:nth-child(3){border-left-color:#1B9A6C}
+.end{background:linear-gradient(#FFFFFF,#FFF4C7)}
 </style>
 </head>
 <body>
@@ -102,18 +139,36 @@ h1{animation:titleIn .9s cubic-bezier(.3,1.6,.5,1) both}
 <main id="root">
 <h1 class="logo"><span class="gav" aria-hidden="true">🔨</span><span class="l1">PHIÊN TÒA</span><span class="l2" aria-label="Bất Ổn"><span style="--i:0">B</span><span style="--i:1">Ấ</span><span style="--i:2">T</span><i></i><span style="--i:3">Ổ</span><span style="--i:4">N</span></span></h1>
 <p class="sub">Bạn là luật sư bị đơn cọc cằn nhất phòng xử. Kịch bản đã “thống nhất”. Chắc vậy.</p>
+<section class="box intro" id="intro">
+<div class="story">
+<p style="animation-delay:.3s">Ba nhóm. Một vụ án. Một bản kịch bản “đã thống nhất”.</p>
+<p style="animation-delay:.8s">Nguyên đơn hứa: “Không thêm tình tiết đâu!”</p>
+<p style="animation-delay:1.3s">Tòa án hứa: “Đã đọc… cái tiêu đề.”</p>
+<p style="animation-delay:1.8s">Còn bạn hứa: “Không cáu.” <b>Hạn sử dụng: 3 phút.</b></p>
+</div>
+<div class="cast">
+<div class="cc" style="animation-delay:2.2s"><span>😴</span><b>Thẩm phán Kịch Bản</b>Xử đúng từng chữ của kịch bản. Đang ngủ.</div>
+<div class="cc" style="animation-delay:2.45s"><span>🕵️</span><b>Nguyên đơn Bất Ngờ</b>Hứa không thêm gì. Vừa thêm một nhân chứng.</div>
+<div class="cc me" style="animation-delay:2.7s"><span>🐯</span><b>Luật sư Hổ Báo (bạn)</b>Gắt như hổ, cọc như báo. Thắng mà không bị đuổi ra ngoài.</div>
+</div>
+<p class="how" style="animation-delay:3s">Mỗi hồi chọn một cách phản ứng. Giữ <b>Bình tĩnh</b> và <b>Công lý</b>, đừng để tụt cả hai.</p>
+<button id="start" class="go" type="button" style="animation-delay:3.2s,4.2s">🔨 Bắt đầu phiên tòa</button>
+</section>
+<div id="game" hidden>
 <div class="box hud">
 <div class="m" id="calm"><b>😌 Bình tĩnh</b><div class="bar"><i></i></div></div>
 <div class="m" id="just"><b>⚖️ Công lý cho thân chủ</b><div class="bar"><i></i></div></div>
 <div class="chip" id="chip"></div>
 </div>
 <div class="stage" id="stage">
+<i class="seal" aria-hidden="true">⚖️</i><i class="lamp l1"></i><i class="lamp l2"></i>
 <div class="ch" id="judge"><span class="av">😴</span><small>Thẩm phán Kịch Bản</small></div>
 <div class="ch" id="plaintiff"><span class="av">🕵️</span><small>Nguyên đơn Bất Ngờ</small></div>
 <div class="ch" id="you"><span class="av">🐯</span><small>Luật sư Hổ Báo (bạn)</small></div>
 </div>
 <div class="log" id="log"></div>
 <div class="opts" id="opts"></div>
+</div>
 </main>
 <script>
 var calm=70,just=50,idx=0;
@@ -131,6 +186,7 @@ good:function(){SFX.gavel();[523,659,784,1047].forEach(function(f,i){tone(f,.2+i
 bad:function(){SFX.gavel();tone(330,.25,.3,"sawtooth",.1,260);tone(294,.55,.3,"sawtooth",.1,230);tone(262,.85,.35,"sawtooth",.1,200);tone(196,1.2,.75,"sawtooth",.11,120)},
 win:function(){[523,659,784,1047,1319].forEach(function(f,i){tone(f,i*.12,.28,"triangle",.14)});for(var i=0;i<10;i++)noise(.6+i*.06,.1,.12,4200)}
 };
+var AV={judge:"👨‍⚖️",plaintiff:"🕵️",you:"🐯"};
 var NAMES={judge:"Thẩm phán Kịch Bản",plaintiff:"Nguyên đơn Bất Ngờ",you:"Luật sư Hổ Báo"};
 var R=[
 {t:"Hồi 1: Chuẩn bị",u:"5%",d:[["note","Nhóm chat, 21:53. Ba nhóm chốt vụ án: chỉ đổi tên, tuyệt đối không thêm tình tiết."],["plaintiff","Chốt nha! Tôi thề không thêm gì đâu. (nháy mắt trái, rồi nháy mắt phải)"],["note","Nhóm Tòa án đang trực tuyến theo kiểu… không trực tuyến."]],
@@ -172,7 +228,7 @@ function talk(w){["judge","plaintiff","you"].forEach(function(k){$(k).classList.
 if(w!=="note"){void $(w).offsetWidth;$(w).classList.add("talk")}}
 function bub(w,t,i){
 var b=mk("div","b "+w);
-if(w!=="note")b.appendChild(mk("em","",NAMES[w]));
+if(w!=="note")b.appendChild(mk("em","",AV[w]+" "+NAMES[w]));
 b.appendChild(document.createTextNode(t));
 b.style.animationDelay=(i||0)*0.35+"s";
 $("log").appendChild(b);
@@ -222,7 +278,12 @@ b.onclick=function(){calm=70;just=50;idx=0;show()};
 d.appendChild(b);$("log").appendChild(d);
 SFX[e[1]==="🏆"||e[1]==="🤝"?"win":"bad"]();rain(e[1]==="🌪️"?["💥","🌪️"]:["🎉","⭐","🏆","⚖️"],4)}
 $("snd").onclick=function(){mute=!mute;this.textContent=mute?"🔇":"🔊";this.setAttribute("aria-pressed",String(!mute));if(!mute)setTimeout(SFX.click,60)};
-show();
+function begin(){
+ac();setTimeout(SFX.gavel,120);
+var s=mk("div","slam open","PHIÊN TÒA BẮT ĐẦU!");document.body.appendChild(s);setTimeout(function(){s.remove()},1200);
+var it=$("intro");it.classList.add("out");
+setTimeout(function(){it.hidden=true;var g=$("game");g.hidden=false;g.classList.add("in");show()},450)}
+$("start").onclick=begin;
 </script>
 </body>
 </html>
