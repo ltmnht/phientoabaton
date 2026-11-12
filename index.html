@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Phiên Tòa Bất Ổn</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--stage:#12355B;--card:#FFFDF5;--ink:#14110F;--mute:#5E5648;--red:#E63946;--ok:#1B9A6C;--blue:#2F6FED;--sh:#14110F;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background-color:var(--bg);background-image:radial-gradient(rgba(20,17,15,.07) 2px,transparent 2.5px);background-size:24px 24px;animation:dots 9s linear infinite;color:var(--ink);font:400 16px/1.5 "Be Vietnam Pro",system-ui,sans-serif;overflow-x:hidden}
+main{max-width:660px;margin:0 auto;padding:16px 14px 56px}
+h1{font-weight:800;font-size:clamp(30px,8vw,46px);line-height:1;margin:6px 0 4px;transform:rotate(-1.5deg);text-shadow:3px 3px 0 var(--red)}
+.sub{margin:0 0 14px;font-weight:600;text-align:center}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--sh)}
+.hud{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 12px;margin-bottom:14px}
+.m b{display:block;font-size:13px;font-weight:800;margin-bottom:3px}
+.bar{height:14px;border:2px solid var(--ink);border-radius:8px;background:var(--card);overflow:hidden}
+.bar i{display:block;height:100%;width:50%;transition:width .8s cubic-bezier(.3,1.5,.5,1);background-image:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);background-size:220% 100%;animation:shine 2.4s linear infinite}
+#calm i{background-color:var(--ok)}#just i{background-color:var(--blue)}
+.chip{grid-column:1/-1;font-size:13px;font-weight:600;color:var(--mute)}
+.stage{background:var(--stage);color:#fff;border:3px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--sh);display:flex;justify-content:space-around;align-items:flex-end;padding:18px 6px 10px;margin-bottom:14px;position:relative}
+.stage:before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:#7A4B22;border-top:3px solid var(--ink);border-radius:0 0 9px 9px}
+.ch{position:relative;text-align:center;width:31%}
+.av{display:block;font-size:clamp(40px,12vw,64px);line-height:1;transition:transform .2s}
+.ch small{display:block;font-size:11px;font-weight:600;line-height:1.2;margin-top:4px}
+.ch.talk .av{animation:hop .5s ease-in-out 2}
+@keyframes hop{50%{transform:translateY(-12px) rotate(-6deg)}}
+.log{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.b{max-width:88%;padding:9px 13px;border:3px solid var(--ink);border-radius:14px;background:var(--card);box-shadow:3px 3px 0 var(--sh);animation:pop .5s cubic-bezier(.3,1.4,.5,1) both}
+.b em{display:block;font-style:normal;font-weight:800;font-size:12px;margin-bottom:1px}
+.b.judge{align-self:flex-start;background:#DCE9FF;color:#14110F}
+.b.plaintiff{align-self:flex-end;background:#FFD6D9;color:#14110F}
+.b.you{align-self:flex-end;background:#D4F5E6;color:#14110F}
+.b.note{align-self:center;max-width:100%;background:transparent;border:3px dashed var(--ink);box-shadow:none;font-weight:600;text-align:center}
+@keyframes pop{0%{transform:scale(.6) translateY(16px) rotate(-3deg);opacity:0}60%{transform:scale(1.06) rotate(1deg);opacity:1}100%{transform:none;opacity:1}}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{font:600 15px/1.35 "Be Vietnam Pro",sans-serif;text-align:left;color:var(--ink);background:var(--card);border:3px solid var(--ink);border-radius:10px;padding:11px 13px;cursor:pointer;box-shadow:4px 4px 0 var(--sh);transition:transform .1s,box-shadow .1s}
+.opt:hover,.opt:focus-visible{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--sh);outline:none}
+.opt:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:none}
+.opt.pick{opacity:1;background:#FFD23F;color:#14110F}
+.go{font:800 17px "Be Vietnam Pro",sans-serif;color:#fff;background:var(--red);border:3px solid var(--ink);border-radius:10px;padding:11px 20px;cursor:pointer;box-shadow:4px 4px 0 var(--sh);margin-top:12px}
+.go:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--sh)}
+.go:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.slam{position:fixed;left:50%;top:38%;z-index:20;pointer-events:none;font-weight:800;font-size:clamp(34px,11vw,64px);padding:4px 18px;border:6px solid;border-radius:10px;background:var(--card);transform:translate(-50%,-50%) rotate(-6deg);animation:slam 1.1s ease-out forwards;white-space:nowrap}
+.slam.bad{color:var(--red);border-color:var(--red)}.slam.good{color:var(--ok);border-color:var(--ok)}
+@keyframes slam{0%{transform:translate(-50%,-50%) rotate(-16deg) scale(3.6);opacity:0}16%{transform:translate(-50%,-50%) rotate(-4deg) scale(.88);opacity:1}26%{transform:translate(-50%,-50%) rotate(-7deg) scale(1.1)}36%{transform:translate(-50%,-50%) rotate(-6deg) scale(1)}80%{opacity:1}100%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.06);opacity:0}}
+.shake{animation:sk .45s}
+@keyframes sk{20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.rain{position:fixed;top:-40px;z-index:15;pointer-events:none;font-size:26px;animation:fall 2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(300deg)}}
+.end{padding:18px;text-align:center}
+.end .big{font-size:72px;line-height:1.1}
+.end h2{font-size:26px;font-weight:800;margin:6px 0}
+.end p{margin:6px auto;max-width:48ch}
+.moral{border-left:5px solid var(--red);text-align:left;padding-left:12px;font-weight:600}
+.score{font-weight:800;background:#FFD23F;color:#14110F;border:3px solid var(--ink);display:inline-block;padding:6px 12px;border-radius:8px;transform:rotate(-2deg)}
+h1{animation:titleIn .9s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes titleIn{from{transform:translateY(-30px) rotate(-8deg) scale(.7);opacity:0}to{transform:rotate(-1.5deg);opacity:1}}
+@keyframes dots{to{background-position:24px 24px}}
+@keyframes shine{to{background-position:-220% 0}}
+.m{position:relative}
+.dl{position:absolute;right:0;top:-6px;font-weight:800;font-size:18px;pointer-events:none;animation:dl 1.2s ease-out forwards}
+.dl.up{color:var(--ok)}.dl.dn{color:var(--red)}
+@keyframes dl{from{transform:translateY(8px) scale(.6);opacity:0}20%{opacity:1;transform:translateY(-4px) scale(1.4)}to{transform:translateY(-28px);opacity:0}}
+.av{animation:idle 3.2s ease-in-out infinite}
+#plaintiff .av{animation-delay:-1.1s}#you .av{animation-delay:-2.2s}
+@keyframes idle{50%{transform:translateY(-5px)}}
+.stage:after{content:"";position:absolute;inset:0;border-radius:9px;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.2) 50%,transparent 60%);background-size:260% 100%;animation:sweep 5s linear infinite}
+@keyframes sweep{from{background-position:130% 0}to{background-position:-130% 0}}
+.ch.zzz:after{content:"💤";position:absolute;top:-6px;right:4px;font-size:22px;animation:zz 2.2s ease-in-out infinite}
+@keyframes zz{0%{transform:translateY(10px) scale(.6);opacity:0}50%{opacity:1}100%{transform:translateY(-16px) scale(1.1) rotate(12deg);opacity:0}}
+.opt{animation:pop .55s cubic-bezier(.3,1.4,.5,1) backwards}
+.go{animation:pop .55s cubic-bezier(.3,1.4,.5,1) backwards,glow 1.8s 1s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:4px 4px 0 var(--sh),0 0 0 7px rgba(230,57,70,.28)}}
+.slam{box-shadow:8px 8px 0 var(--sh)}
+.flash{position:fixed;inset:0;z-index:19;pointer-events:none;animation:fl .6s ease-out forwards}
+.flash.bad{background:radial-gradient(circle,transparent 30%,rgba(230,57,70,.5))}
+.flash.good{background:radial-gradient(circle,transparent 30%,rgba(27,154,108,.4))}
+@keyframes fl{from{opacity:1}to{opacity:0}}
+.end .big{display:inline-block;animation:bigIn 1.1s cubic-bezier(.3,1.6,.5,1) both,idle 2.6s 1.1s ease-in-out infinite}
+@keyframes bigIn{from{transform:scale(0) rotate(-200deg)}to{transform:none}}
+.logo{position:relative;display:block;text-align:center;margin:8px 0 10px;font-size:16px;line-height:1;transform:none;text-shadow:none;animation:logoIn .9s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes logoIn{from{transform:translateY(-40px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.logo .l1{display:inline-block;font-size:clamp(26px,8vw,44px);font-weight:800;letter-spacing:.08em;color:#fff;background:var(--stage);border:3px solid var(--ink);border-radius:10px;padding:4px 18px;box-shadow:5px 5px 0 var(--sh);transform:rotate(-2deg)}
+.logo .l2{display:block;margin-top:6px;font-size:clamp(56px,18vw,96px);font-weight:800;letter-spacing:.02em;color:var(--red);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:5px 5px 0 var(--ink)}
+.logo .l2 span{display:inline-block;animation:wave 1.7s ease-in-out infinite;animation-delay:calc(var(--i) * .12s)}
+.logo .l2 i{display:inline-block;width:.25em}
+@keyframes wave{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(-5deg)}}
+.logo .gav{position:absolute;left:2%;top:-6px;font-size:clamp(30px,9vw,46px);transform-origin:85% 90%;animation:gavel 2.6s ease-in-out infinite}
+@keyframes gavel{0%,58%,100%{transform:rotate(0)}68%{transform:rotate(-55deg)}76%{transform:rotate(14deg)}84%{transform:rotate(0)}}
+.snd{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:10px;z-index:30;width:44px;height:44px;font-size:21px;line-height:1;border:3px solid var(--ink);border-radius:50%;background:var(--card);box-shadow:3px 3px 0 var(--sh);cursor:pointer}
+.snd:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+</style>
+</head>
+<body>
+<button id="snd" class="snd" type="button" aria-label="Bật hoặc tắt âm thanh" aria-pressed="true">🔊</button>
+<main id="root">
+<h1 class="logo"><span class="gav" aria-hidden="true">🔨</span><span class="l1">PHIÊN TÒA</span><span class="l2" aria-label="Bất Ổn"><span style="--i:0">B</span><span style="--i:1">Ấ</span><span style="--i:2">T</span><i></i><span style="--i:3">Ổ</span><span style="--i:4">N</span></span></h1>
+<p class="sub">Bạn là luật sư bị đơn cọc cằn nhất phòng xử. Kịch bản đã “thống nhất”. Chắc vậy.</p>
+<div class="box hud">
+<div class="m" id="calm"><b>😌 Bình tĩnh</b><div class="bar"><i></i></div></div>
+<div class="m" id="just"><b>⚖️ Công lý cho thân chủ</b><div class="bar"><i></i></div></div>
+<div class="chip" id="chip"></div>
+</div>
+<div class="stage" id="stage">
+<div class="ch" id="judge"><span class="av">😴</span><small>Thẩm phán Kịch Bản</small></div>
+<div class="ch" id="plaintiff"><span class="av">🕵️</span><small>Nguyên đơn Bất Ngờ</small></div>
+<div class="ch" id="you"><span class="av">🐯</span><small>Luật sư Hổ Báo (bạn)</small></div>
+</div>
+<div class="log" id="log"></div>
+<div class="opts" id="opts"></div>
+</main>
+<script>
+var calm=70,just=50,idx=0;
+var AC=null,mute=false;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}}if(AC.state==="suspended")AC.resume()}
+["pointerdown","keydown"].forEach(function(t){addEventListener(t,ac)});
+function ok(){return !mute&&AC&&AC.state==="running"}
+function tone(f,t,d,ty,v,sl){if(!ok())return;var o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+t;o.type=ty||"sine";o.frequency.setValueAtTime(f,s);if(sl)o.frequency.exponentialRampToValueAtTime(sl,s+d);g.gain.setValueAtTime(v||.15,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d+.02)}
+function noise(t,d,v,fq){if(!ok())return;var n=Math.floor(AC.sampleRate*d),b=AC.createBuffer(1,n,AC.sampleRate),x=b.getChannelData(0);for(var i=0;i<n;i++)x[i]=(Math.random()*2-1)*(1-i/n);var s=AC.createBufferSource(),fl=AC.createBiquadFilter(),g=AC.createGain();s.buffer=b;fl.type="lowpass";fl.frequency.value=fq||1200;g.gain.value=v||.4;s.connect(fl);fl.connect(g);g.connect(AC.destination);s.start(AC.currentTime+t)}
+var SFX={
+pop:function(){tone(520,0,.09,"sine",.1,840)},
+click:function(){tone(320,0,.07,"square",.06,190)},
+gavel:function(){noise(0,.2,.7,520);tone(150,0,.22,"sine",.45,45)},
+good:function(){SFX.gavel();[523,659,784,1047].forEach(function(f,i){tone(f,.2+i*.09,.2,"triangle",.14)});for(var i=0;i<7;i++)noise(.4+i*.07,.1,.14,4200)},
+bad:function(){SFX.gavel();tone(330,.25,.3,"sawtooth",.1,260);tone(294,.55,.3,"sawtooth",.1,230);tone(262,.85,.35,"sawtooth",.1,200);tone(196,1.2,.75,"sawtooth",.11,120)},
+win:function(){[523,659,784,1047,1319].forEach(function(f,i){tone(f,i*.12,.28,"triangle",.14)});for(var i=0;i<10;i++)noise(.6+i*.06,.1,.12,4200)}
+};
+var NAMES={judge:"Thẩm phán Kịch Bản",plaintiff:"Nguyên đơn Bất Ngờ",you:"Luật sư Hổ Báo"};
+var R=[
+{t:"Hồi 1: Chuẩn bị",u:"5%",d:[["note","Nhóm chat, 21:53. Ba nhóm chốt vụ án: chỉ đổi tên, tuyệt đối không thêm tình tiết."],["plaintiff","Chốt nha! Tôi thề không thêm gì đâu. (nháy mắt trái, rồi nháy mắt phải)"],["note","Nhóm Tòa án đang trực tuyến theo kiểu… không trực tuyến."]],
+c:[["Ghim tin nhắn: “Nhóm Tòa án! Không rep thì coi như đồng ý nhé!”",5,5,"judge","Tôi thả tim lúc 2h sáng. Vậy là tôi đã làm việc rồi đúng không?"],
+["Tự gánh luôn phần của Tòa án, tiện tay ghi sổ nợ",-10,0,"note","Bạn kiêm nhiệm Thẩm phán. Lương: một điểm chung."],
+["Nhắn thẳng thầy: “Có nhóm không làm gì mà vẫn đòi điểm!”",5,15,"judge","Ơ, có người báo cáo sớm? Hiếm có khó tìm."]]},
+{t:"Hồi 2: Chạy thử",u:"4%",d:[["judge","Bị cáo! Anh khai đi! Tôi hỏi, anh trả lời!"],["you","Này! Đây là TRANH TỤNG, không phải thẩm vấn! Việc của bạn là gọi tên các bên, hiểu chưa?!"],["note","Buổi chạy thử 10h sáng bị hủy vì thiếu người. Chạy thử biến thành chạy… thật."]],
+c:[["Ném thẳng trình tự phiên tòa vào mặt: “Đọc đi!”",5,10,"judge","À, tôi là người gọi tên. Ghi chú: không hỏi cung. Ghi chú nữa: ghi chú ở đâu?"],
+["Gắt lên: “Đề còn chưa đọc mà đòi xử ai?!”",-10,-5,"judge","Đọc rồi… cái tiêu đề."],
+["Khoanh tay, nhếch mép: “Mai tôi xử luôn cả hai.”",0,-10,"note","Hy vọng không phải là một chiến lược tố tụng."]]},
+{t:"Hồi 3: Tình tiết bí mật",u:"3%",d:[["plaintiff","Thưa Hội đồng! Tối hôm đó còn có nhân chứng mới: ông hàng xóm bí ẩn!"],["judge","Nhân chứng nào? Kịch bản trang mấy?"],["you","Khoan! Nhân chứng nào?! Tôi nghe lần đầu trong đời!"]],
+c:[["Đập bàn: “Phản đối! Tình tiết mới không báo trước, đòi thêm thời gian chuẩn bị!”",5,20,"judge","Yêu cầu hợp lý. Có ai ghi biên bản không? Không? Tuyệt."],
+["Bật dậy gào: “Bịa! Toàn bịa!”",-5,5,"plaintiff","Phản bác gì ạ? Tôi còn chưa kịp bịa hết mà."],
+["Gầm lên chỉ mặt cả hai nhóm, vỗ bàn rầm rầm",-35,-15,"note","Cả phòng quên nhân chứng mới, chỉ nhớ giọng bạn. Ông hàng xóm bí ẩn lặng lẽ rút lui."]]},
+{t:"Hồi 4: Bản án có sẵn",u:"2%",d:[["judge","Sau khi cân nhắc kỹ lưỡng (không), Tòa tuyên án đúng theo kịch bản."],["note","Bằng chứng của bị đơn: đã gửi, đã xem, đã… để đó."],["note","Đồng hồ: còn vài phút."]],
+c:[["Chặn lời: “Khoan! Chưa làm rõ mà tuyên cái gì?!”",5,15,"judge","Làm rõ à… Kịch bản trang sau để trống."],
+["Gào “Oan quá trời đất ơi!” lên tận trần nhà",-10,0,"note","Khán phòng thương bạn, nhưng thương thì không phải là chứng cứ."],
+["Nghiến răng nuốt cục tức vì sắp hết giờ",10,-10,"note","Bạn nhường thời gian cho thầy và các bạn. Công lý hẹn buổi học sau."]]},
+{t:"Hồi 5: Điểm chung",u:"1%",d:[["note","Điểm số: một điểm chung cho tất cả. Người làm đến 2h sáng được chia đều với người ngủ sớm."],["judge","Công bằng mà! Ai cũng bằng nhau."],["you","Bằng nhau kiểu gì?! Tôi cày đến 2h sáng, họ ngủ ngon, mà cùng một điểm?!"]],
+c:[["Đập bản kiến nghị lên bàn: “Công khai tiêu chí, xét mức đóng góp!”",5,15,"judge","Công khai tiêu chí? Cái này có trong kịch bản không?"],
+["Cắn răng nhận điểm chung, ghi sổ thù dai",0,-10,"note","Công bằng không bị đập vỡ. Nó bị bào mòn bằng nhiều cái nhún vai."],
+["Lên mạng xã hội đăng bài tố khổ dài ba trang",-15,-5,"note","30 lượt thích, 0 người đọc tiêu chí chấm điểm."]]}
+];
+var E=[
+[function(){return calm<30},"🌪️","Cơn Bão Phòng Xử","Lý lẽ của bạn có thể đúng, nhưng ai còn nghe nữa. Cái búa gõ vào tai Thẩm phán đã đủ to rồi."],
+[function(){return just>=80&&calm>=60},"🏆","Hổ Báo Có Học","Bạn gắt đúng chỗ, cọc đúng lúc và vẫn có lập luận. Cả phòng xử vừa sợ vừa nể."],
+[function(){return just<40},"📜","Nạn Nhân Của Kịch Bản","Bản án đúng từng chữ… của kịch bản. Công lý thì chưa kịp điểm danh."],
+[function(){return true},"🤝","Hòa Cả Làng","Chẳng ai thắng, chẳng ai thua, chỉ có điểm chung."]];
+var $=function(i){return document.getElementById(i)};
+function mk(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e}
+function cl(v){return Math.max(0,Math.min(100,v))}
+function meters(){calm=cl(calm);just=cl(just);
+document.querySelector("#calm i").style.width=calm+"%";
+document.querySelector("#just i").style.width=just+"%"}
+function face(){
+var jf=calm<30?"😵":just>=70?"🤔":just<40?"😴":"🙂";document.querySelector("#judge .av").textContent=jf;$("judge").classList.toggle("zzz",jf==="😴");
+document.querySelector("#you .av").textContent=calm<30?"🤬":calm<55?"😡":"🐯"}
+function talk(w){["judge","plaintiff","you"].forEach(function(k){$(k).classList.remove("talk")});
+if(w!=="note"){void $(w).offsetWidth;$(w).classList.add("talk")}}
+function bub(w,t,i){
+var b=mk("div","b "+w);
+if(w!=="note")b.appendChild(mk("em","",NAMES[w]));
+b.appendChild(document.createTextNode(t));
+b.style.animationDelay=(i||0)*0.35+"s";
+$("log").appendChild(b);
+return b}
+function show(){
+var r=R[idx];
+$("log").innerHTML="";$("opts").innerHTML="";
+$("chip").textContent=r.t+" · Độ hiểu vụ án của Tòa: "+r.u;
+r.d.forEach(function(x,i){bub(x[0],x[1],i);setTimeout(SFX.pop,i*350+80)});
+talk(r.d[0][0]);
+r.c.forEach(function(o,i){
+var b=mk("button","opt",o[0]);b.type="button";b.style.animationDelay=(0.9+i*0.15)+"s";
+b.onclick=function(){pick(i)};$("opts").appendChild(b)});
+meters();face()}
+function slam(good){
+var f=mk("div","flash "+(good?"good":"bad"));document.body.appendChild(f);setTimeout(function(){f.remove()},700);
+var s=mk("div","slam "+(good?"good":"bad"),good?"HỢP LỆ!":"PHẢN ĐỐI BỊ BÁC!");
+document.body.appendChild(s);SFX[good?"good":"bad"]();setTimeout(function(){s.remove()},1200);
+if(good){["⭐","⚖️","📜","🎉"].forEach(function(e,k){for(var j=0;j<4;j++){
+var p=mk("span","rain",e);p.style.left=Math.random()*95+"%";p.style.animationDelay=Math.random()*.6+"s";
+document.body.appendChild(p);(function(q){setTimeout(function(){q.remove()},2800)})(p)}})}
+else{var st=$("stage");st.classList.remove("shake");void st.offsetWidth;st.classList.add("shake")}}
+function dl(id,v){if(!v)return;var e=mk("span","dl "+(v>0?"up":"dn"),(v>0?"+":"")+v);$(id).appendChild(e);setTimeout(function(){e.remove()},1300)}
+function rain(l,n){l.forEach(function(e){for(var j=0;j<n;j++){var p=mk("span","rain",e);p.style.left=Math.random()*95+"%";p.style.animationDelay=Math.random()*.9+"s";document.body.appendChild(p);(function(q){setTimeout(function(){q.remove()},3200)})(p)}})}
+function pick(i){
+var o=R[idx].c[i];SFX.click();
+document.querySelectorAll(".opt").forEach(function(b,k){b.disabled=true;if(k===i)b.classList.add("pick")});
+calm+=o[1];just+=o[2];meters();face();dl("calm",o[1]);dl("just",o[2]);
+var good=o[1]+o[2]>=10;
+bub("you",o[0],0);talk("you");
+setTimeout(function(){bub(o[3],o[4],0);talk(o[3]);slam(good);
+var n=mk("button","go",idx<R.length-1?"Sang hồi tiếp theo":"Nghe tuyên án");n.type="button";
+n.onclick=function(){SFX.click();idx++;idx<R.length?show():end()};
+$("opts").appendChild(n);n.focus();n.scrollIntoView({block:"nearest",behavior:"smooth"})},500)}
+function end(){
+var e=E.filter(function(x){return x[0]()})[0];
+$("log").innerHTML="";$("opts").innerHTML="";$("chip").textContent="Tuyên án";
+var d=mk("div","box end");
+d.appendChild(mk("div","big",e[1]));
+d.appendChild(mk("h2","",e[2]));
+d.appendChild(mk("p","",e[3]));
+d.appendChild(mk("div","score","Bình tĩnh "+calm+"/100 · Công lý "+just+"/100"));
+d.appendChild(mk("p","","Điểm cuối kỳ: Nguyên đơn 9, Tòa án 9, bạn 9. Công bằng được chia đều đến từng phần lẻ."));
+d.appendChild(mk("p","moral","Một bên có thể bị đặt vào thế bất lợi, nhưng điều đó không cho phép bỏ chuẩn mực ứng xử. Công bằng phải đi cùng trách nhiệm của tất cả: nguyên đơn, bị đơn và người điều hành phiên tòa."));
+var b=mk("button","go","Xử lại từ đầu");b.type="button";
+b.onclick=function(){calm=70;just=50;idx=0;show()};
+d.appendChild(b);$("log").appendChild(d);
+SFX[e[1]==="🏆"||e[1]==="🤝"?"win":"bad"]();rain(e[1]==="🌪️"?["💥","🌪️"]:["🎉","⭐","🏆","⚖️"],4)}
+$("snd").onclick=function(){mute=!mute;this.textContent=mute?"🔇":"🔊";this.setAttribute("aria-pressed",String(!mute));if(!mute)setTimeout(SFX.click,60)};
+show();
+</script>
+</body>
+</html>
